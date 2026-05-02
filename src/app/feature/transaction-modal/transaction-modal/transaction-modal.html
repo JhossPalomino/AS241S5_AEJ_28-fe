@@ -1,0 +1,40 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-container">
+    
+    <div class="modal-tabs">
+      <div class="m-tab active">traduccion</div>
+      <div class="m-tab">proximamente</div>
+    </div>
+
+    <button class="btn-close" (click)="close()">
+      <span class="material-icons">close</span>
+    </button>
+
+    <div class="modal">
+      <h2 class="modal-title">Traducir orden</h2>
+      <hr class="modal-divider" />
+
+      <div class="modal-body">
+        <div class="translate-box">
+          <div class="box-header">
+            <span>detectar</span>
+            <span class="material-icons icon-sm">expand_more</span>
+          </div>
+          <textarea rows="8">¿Cual es mi nombre?</textarea>
+        </div>
+
+        <div class="translate-box">
+          <div class="box-header">
+            <span>english</span>
+            <span class="material-icons icon-sm">expand_more</span>
+          </div>
+          <textarea rows="8" disabled>What is my name?</textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-action">traducir y guardar</button>
+      </div>
+    </div>
+  </div>
+</div>

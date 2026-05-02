@@ -1,0 +1,174 @@
+.modal-overlay {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background: #6D4C4183;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  position: relative;
+  width: 1100px; 
+  max-width: 95%;
+}
+
+.modal-tabs {
+  position: absolute;
+  top: -49px; /* Flotan exactamente sobre el borde del modal */
+  left: 50px;
+  display: flex;
+  gap: 5px;
+  z-index: 10; /* Para que la pestaña activa tape el borde del modal */
+  
+  .m-tab {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.8rem;
+    font-style: italic;
+    padding: 0 40px; 
+    color: #fff;
+    cursor: pointer;
+    border-radius: 20px 20px 0 0;
+    background: #BAABA6; 
+    height: 50px; /* Altura fija para que la base sea perfecta */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &.active {
+      background: #79665F; 
+      color: #FFFFFF; 
+    }
+  }
+}
+
+/* --- 1. ESTILO DE LA SOLAPA DE CIERRE 'X' ARREGLADA --- */
+.btn-close {
+  position: absolute;
+  top: -47px; /* Altura para descansar sobre el modal */
+  right: 40px; /* Lo movimos hacia la izquierda para que no rompa la esquina curva */
+  background: #5a4a42; 
+  color: #fff;
+  border: none;
+  border-radius: 15px 15px 0 0; /* Más redondeado arriba */
+  width: 65px; /* Mucho más ancho */
+  height: 48px; /* Más alto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 5;
+
+  .material-icons {
+    font-size: 28px; /* Ícono un poco más grande */
+  }
+
+  &:hover {
+    background: #463933;
+  }
+}
+
+/* --- MODAL PRINCIPAL --- */
+.modal {
+  background: #f8ead9; 
+  border-radius: 30px; /* 2. ¡AHORA SÍ! Todos los bordes súper redondeados */
+  padding: 50px 60px 40px 60px; /* Un poco de respiro interno */
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 1; /* Se queda debajo de las pestañas */
+}
+
+.modal-title {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 2.8rem; 
+  color: #333;
+  text-align: center;
+  margin: 0 0 15px 0;
+  font-weight: normal;
+}
+
+.modal-divider {
+  border: none;
+  border-top: 2px solid #5a4a42;
+  margin: 0 50px 40px 50px; 
+  opacity: 0.6;
+}
+
+.modal-body {
+  display: flex;
+  gap: 30px; 
+  margin-bottom: 40px;
+
+  .translate-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 30px; 
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+    .box-header {
+      background: #e5ddd5; 
+      padding: 15px 30px; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #666;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+
+      .icon-sm {
+        font-size: 20px;
+      }
+    }
+
+    textarea {
+      resize: none;
+      padding: 25px 30px; 
+      border: none;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 1.2rem;
+      background: #fff;
+      color: #444;
+      outline: none;
+      height: 320px; 
+
+      &:disabled {
+        background: #fff; 
+        color: #555;
+      }
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+
+  .btn-action {
+    width: 100%;
+    background: #d49a8f; 
+    color: #fff;
+    border: none;
+    padding: 18px; 
+    border-radius: 15px; 
+    cursor: pointer;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2.1rem; 
+    transition: background 0.2s;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(212, 154, 143, 0.4);
+
+    &:hover {
+      background: #c38b81;
+    }
+  }
+}

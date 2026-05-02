@@ -1,0 +1,96 @@
+<div class="app-container">
+    <app-sidebar></app-sidebar>
+
+    <div class="main-content">
+        <!-- Bloque de título independiente -->
+        <div class="translate-header">
+            <h2>Especial de los Políglotas</h2>
+        </div>
+
+        <!-- Bloque de lista -->
+        <div class="translate-list">
+            <div class="toolbar">
+                <!-- Bloque izquierdo -->
+                <div class="toolbar-left">
+                    <div class="search-input">
+                        <span class="material-icons">explore</span>
+                        <input type="text" placeholder="busca tu próxima obsesión.." />
+                    </div>
+                    <button class="btn-sort">
+                        <span class="material-icons">arrow_upward</span> Ascendente
+                    </button>
+                </div>
+
+                <!-- Bloque derecho -->
+                <div class="toolbar-right">
+                    <button class="btn-refresh">
+                        <span class="material-icons">refresh</span>
+                    </button>
+                    <button class="btn-new" (click)="transactionModal.open()">
+                        <span class="material-icons">note_add</span> Nuevo pedido
+                    </button>
+                    <app-transaction-modal #transactionModal></app-transaction-modal>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Texto original</th>
+                        <th>Texto traducido</th>
+                        <th>Fecha</th>
+                        <th>Idioma inicial</th>
+                        <th>Idioma final</th>
+                        <th class="no-header"></th> <!-- columna acciones sin texto -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="status-cell">
+                            <span class="material-icons inactive">wifi_off</span>
+                            <span class="status-text inactive">Inactivo</span>
+                        </td>
+                        <td>Esto es una prueba..</td>
+                        <td>This is a Translation..</td>
+                        <td>2026-04-04</td>
+                        <td>spanish</td>
+                        <td>english</td>
+                        <td>
+                            <span class="material-icons btn-menu">more_vert</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="status-cell">
+                            <span class="material-icons active">wifi</span>
+                            <span class="status-text active">Activo</span>
+                        </td>
+                        <td>Esto es una prueba..</td>
+                        <td>This is a Translation..</td>
+                        <td>2026-04-04</td>
+                        <td>spanish</td>
+                        <td>english</td>
+                        <td>
+                            <span class="material-icons btn-menu">more_vert</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <button class="page-btn prev">
+                    <span class="material-icons">arrow_left</span>
+                    <span class="label">anterior</span>
+                </button>
+
+                <span class="page-number">1</span>
+
+                <button class="page-btn next">
+                    <span class="label">próximo</span>
+                    <span class="material-icons">arrow_right</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
