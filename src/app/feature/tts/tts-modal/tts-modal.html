@@ -1,0 +1,93 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-container">
+    
+    <div class="modal-tabs">
+      <div class="m-tab active">texto a voz</div>
+      <div class="m-tab">proximamente</div>
+    </div>
+
+    <button class="btn-close" (click)="close()">
+      <span class="material-icons">close</span>
+    </button>
+
+    <div class="modal">
+      <h2 class="modal-title">{{ isEditMode ? 'Editar orden' : 'Nueva orden' }}</h2>
+      <hr class="modal-divider" />
+
+      <div class="loading-bar-container" *ngIf="isLoading">
+        <div class="loading-bar"></div>
+        <span class="loading-text">Procesando tu audio magico con mucha cafeina...</span>
+      </div>
+
+      <div class="modal-body" [class.disabled-body]="isLoading">
+        
+        <div class="translate-box">
+          <div class="box-header">Texto</div>
+          <textarea [(ngModel)]="text" 
+                    (input)="onTextChange()" 
+                    [disabled]="isLoading" 
+                    placeholder="¿Cual es mi nombre?"></textarea>
+        </div>
+
+        <div class="translate-box">
+          <div class="box-header">Voz</div>
+          
+          <div class="voice-selection-container">
+            <div class="searchable-select">
+              <input type="text" 
+                     [(ngModel)]="voiceSearchText" 
+                     (input)="filterVoices(); onTextChange()"
+                     (focus)="voiceDropdownOpen = true" 
+                     (blur)="closeDropdown()"
+                     [disabled]="isLoading"
+                     placeholder="Buscar voz..." />
+            </div>
+
+            <div class="dropdown-menu" *ngIf="voiceDropdownOpen">
+              <div class="dropdown-item" 
+                   *ngFor="let v of filteredVoices" 
+                   (mousedown)="selectVoice(v)"
+                   [class.selected]="v.value === selectedVoiceValue">
+                {{ v.name }} ({{ v.locale }})
+              </div>
+            </div>
+          </div>
+
+          <div class="audio-content">
+            <div class="audio-player-wrapper" [class.disabled]="!audioElement.src || canProcess">
+              <button class="btn-play-pause" (click)="togglePlay()" [disabled]="!audioElement.src || canProcess">
+                <span class="material-icons">{{ isPlaying ? 'pause' : 'play_arrow' }}</span>
+              </button>
+              
+              <span class="audio-time">{{ currentTimeDisplay }}/{{ durationDisplay }}</span>
+              
+              <input type="range" 
+                     class="audio-progress" 
+                     min="0" max="100" 
+                     [value]="audioProgress" 
+                     (input)="seekAudio($event)"
+                     [disabled]="!audioElement.src || canProcess">
+            </div>
+
+            <div class="audio-buttons">
+              <button class="btn-sec download" (click)="downloadAudio()" [disabled]="!audioFileId || canProcess">
+                descargar
+              </button>
+              <button class="btn-sec view-id" (click)="viewId()" [disabled]="!audioFileId">
+                ver id
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-action-main" (click)="executeAction()" [disabled]="!canProcess">
+          <span *ngIf="!isLoading">{{ isEditMode ? 'guardar cambios' : 'traducir y guardar' }}</span>
+          <span *ngIf="isLoading">procesando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

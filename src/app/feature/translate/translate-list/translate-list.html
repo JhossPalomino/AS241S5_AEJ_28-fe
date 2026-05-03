@@ -2,34 +2,34 @@
     <app-sidebar></app-sidebar>
 
     <div class="main-content">
-        <!-- Bloque de título independiente -->
+        <router-outlet></router-outlet>
         <div class="translate-header">
             <h2>Especial de los Políglotas</h2>
         </div>
 
-        <!-- Bloque de lista -->
         <div class="translate-list">
             <div class="toolbar">
-                <!-- Bloque izquierdo -->
                 <div class="toolbar-left">
                     <div class="search-input">
                         <span class="material-icons">explore</span>
-                        <input type="text" placeholder="busca tu próxima obsesión.." />
+                        <input type="text" placeholder="busca tu próxima obsesión.." [(ngModel)]="searchTerm" />
                     </div>
-                    <button class="btn-sort">
-                        <span class="material-icons">arrow_upward</span> Ascendente
+                    <button class="btn-sort" (click)="toggleSort()">
+                        <span class="material-icons">
+                            {{ sortAscending ? 'arrow_upward' : 'arrow_downward' }}
+                        </span>
+                        {{ sortAscending ? 'Ascendente' : 'Descendente' }}
                     </button>
                 </div>
 
-                <!-- Bloque derecho -->
                 <div class="toolbar-right">
                     <button class="btn-refresh">
-                        <span class="material-icons">refresh</span>
+                        <span class="material-icons" (click)="loadTranslations()">refresh</span>
                     </button>
                     <button class="btn-new" (click)="transactionModal.open()">
                         <span class="material-icons">note_add</span> Nuevo pedido
                     </button>
-                    <app-transaction-modal #transactionModal></app-transaction-modal>
+                    <app-transaction-modal #transactionModal (closed)="loadTranslations()">></app-transaction-modal>
                 </div>
             </div>
 
@@ -42,55 +42,92 @@
                         <th>Fecha</th>
                         <th>Idioma inicial</th>
                         <th>Idioma final</th>
-                        <th class="no-header"></th> <!-- columna acciones sin texto -->
+                        <th class="no-header"></th> 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngFor="let t of paginatedTranslations">
                         <td class="status-cell">
-                            <span class="material-icons inactive">wifi_off</span>
-                            <span class="status-text inactive">Inactivo</span>
+                            <span class="material-icons" [ngClass]="t.status ? 'active' : 'inactive'">
+                                {{ t.status ? 'wifi' : 'wifi_off' }}
+                            </span>
+                            <span class="status-text" [ngClass]="t.status ? 'active' : 'inactive'">
+                                {{ t.status ? 'Activo' : 'Inactivo' }}
+                            </span>
                         </td>
-                        <td>Esto es una prueba..</td>
-                        <td>This is a Translation..</td>
-                        <td>2026-04-04</td>
-                        <td>spanish</td>
-                        <td>english</td>
+                        <td>{{ t.originalText }}</td>
+                        <td>{{ t.translatedText }}</td>
+                        <td>{{ t.createdAt | date:'yyyy-MM-dd' }}</td>
+                        <td>{{ getLanguageName(t.sourceLanguage) }}</td>
+                        <td>{{ getLanguageName(t.targetLanguage) }}</td>
                         <td>
-                            <span class="material-icons btn-menu">more_vert</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="status-cell">
-                            <span class="material-icons active">wifi</span>
-                            <span class="status-text active">Activo</span>
-                        </td>
-                        <td>Esto es una prueba..</td>
-                        <td>This is a Translation..</td>
-                        <td>2026-04-04</td>
-                        <td>spanish</td>
-                        <td>english</td>
-                        <td>
-                            <span class="material-icons btn-menu">more_vert</span>
+                            <span class="material-icons btn-menu" (click)="openMenu(t, $event)">
+                                more_vert
+                            </span>
+
+                            <div class="menu-popup" *ngIf="t.showMenu" [style.top.px]="t.menuTop"
+                                [style.left.px]="t.menuLeft">
+                                <button (click)="edit(t)">
+                                    <span class="material-icons">edit</span> editar
+                                </button>
+
+                                <button *ngIf="t.status" (click)="confirmDelete(t)" class="btn-delete">
+                                    <span class="material-icons">delete</span> eliminar
+                                </button>
+
+                                <button *ngIf="!t.status" (click)="confirmRestore(t)" class="btn-restore">
+                                    <span class="material-icons">restore</span> restaurar
+                                </button>
+
+                                <button (click)="view(t)">
+                                    <span class="material-icons">visibility</span> ver
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
             <div class="pagination">
-                <button class="page-btn prev">
+                <button class="page-btn prev" (click)="prevPage()" [disabled]="currentPage === 1">
                     <span class="material-icons">arrow_left</span>
                     <span class="label">anterior</span>
                 </button>
 
-                <span class="page-number">1</span>
+                <span class="page-number">{{ currentPage }}</span>
 
-                <button class="page-btn next">
+                <button class="page-btn next" (click)="nextPage()"
+                    [disabled]="currentPage * pageSize >= translations.length">
                     <span class="label">próximo</span>
                     <span class="material-icons">arrow_right</span>
                 </button>
             </div>
+        </div>
+    </div>
+    <div class="confirm-overlay" *ngIf="showConfirmModal">
+        <div class="confirm-modal">
+            <button class="btn-close-modal" (click)="closeConfirmModal()">
+                <span class="material-icons">close</span>
+            </button>
 
+            <div class="confirm-image-container">
+                <img src="/manhattancafe.webp" alt="Taza de café" />
+            </div>
+
+            <div class="confirm-actions-container">
+                <h3 class="confirm-title" *ngIf="confirmActionType === 'delete'">
+                    ¿Esta seguro de que desea<br>eliminar esto?
+                </h3>
+                <h3 class="confirm-title" *ngIf="confirmActionType === 'restore'">
+                    ¿Esta seguro de que desea<br>restaurar esto?
+                </h3>
+
+                <button class="btn-accept" (click)="executeConfirmAction()">
+                    si, acepto las consecuencias
+                </button>
+                <button class="btn-decline" (click)="closeConfirmModal()">
+                    prefiero descartar
+                </button>
+            </div>
         </div>
     </div>
 </div>

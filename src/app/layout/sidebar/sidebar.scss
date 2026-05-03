@@ -4,10 +4,10 @@
   display: flex;
   flex-direction: column;
   color: #fff;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 
   &-top {
-    background-color: #5A3F36; // bloque superior más oscuro
+    background-color: #5a3f36; // bloque superior más oscuro
     padding: 20px 15px;
 
     .logo {
@@ -19,7 +19,7 @@
       }
 
       h2 {
-        font-family: 'Segoe UI';
+        font-family: "Segoe UI";
         font-size: 25px;
         margin: 0;
         letter-spacing: 14%;
@@ -29,17 +29,17 @@
 
   &-middle {
     flex: 1;
-    background-color: #6D4C41; // bloque intermedio
+    background-color: #6d4c41; // bloque intermedio
     padding: 40px 40px;
 
     .menu-section {
       margin-bottom: 25px;
 
       h3 {
-        font-family: 'Patrick Hand', cursive;
+        font-family: "Patrick Hand", cursive;
         font-size: 23px;
         margin-bottom: 10px;
-        color: #F5E0C8;
+        color: #f5e0c8;
       }
 
       ul {
@@ -48,7 +48,7 @@
         margin: 0;
 
         li {
-          font-family: 'Segoe UI', sans-serif;
+          font-family: "Segoe UI", sans-serif;
           display: flex;
           font-size: 20px;
           align-items: center;
@@ -57,9 +57,19 @@
           cursor: pointer;
           transition: background 0.3s;
 
+          &.active,
           &:hover {
-            background-color: #FFF7EE;
-            color: #2E2216;
+            background-color: #fff7ee; // Fondo crema del Figma
+            color: #2e2216; // Texto café oscuro
+
+            .material-icons {
+              color: #2e2216; // El icono también debe cambiar
+            }
+          }
+
+          // Opcional: Si quieres que el estilo 'active' sea ligeramente diferente al hover
+          &.active {
+            font-weight: bold;
           }
 
           .material-icons {
@@ -72,7 +82,7 @@
   }
 
   &-bottom {
-    background-color: #5A3F36; // bloque inferior más oscuro
+    background-color: #5a3f36; // bloque inferior más oscuro
     height: 60px;
   }
 }

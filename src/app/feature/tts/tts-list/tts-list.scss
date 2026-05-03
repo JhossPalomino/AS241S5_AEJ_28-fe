@@ -9,7 +9,8 @@
   overflow-y: auto;
 }
 
-.translate-header {
+/* Cambiado de translate-header a tts-header */
+.tts-header {
   background-color: #5a3f36;
   padding: 20px;
   text-align: left;
@@ -26,7 +27,8 @@
   }
 }
 
-.translate-list .toolbar button:not(.btn-refresh) {
+/* Cambiado de translate-list a tts-list */
+.tts-list .toolbar button:not(.btn-refresh) {
   padding: 14px 20px;
   font-size: 16px;
   border-radius: 10px;
@@ -38,9 +40,9 @@
   }
 }
 
-/* Bloque de lista */
-.translate-list {
-  background-color: #fff8e1; // tono claro
+/* Bloque de lista principal */
+.tts-list {
+  background-color: #fff8e1;
   padding: 20px;
   border-radius: 0 0 10px 10px;
   font-family: "Segoe UI", sans-serif;
@@ -48,7 +50,7 @@
 
   .toolbar {
     display: flex;
-    justify-content: space-between; // separa izquierda y derecha
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 25px;
 
@@ -64,31 +66,31 @@
         border-radius: 8px;
         padding: 0 12px;
         flex: 1;
-        min-width: 300px; // asegura espacio mínimo
-        max-width: 600px; // opcional, límite superior
+        min-width: 300px;
+        max-width: 600px;
 
         .material-icons {
           color: #514f4c;
           font-size: 32px;
           margin-right: 8px;
-          flex-shrink: 0; // evita que el ícono se reduzca
+          flex-shrink: 0;
         }
 
         input {
-          flex: 1; // ocupa todo el espacio restante
+          flex: 1;
           border: none;
           outline: none;
           font-family: "Patrick Hand", cursive;
-          padding: 12px 0; // altura suficiente
-          font-size: 18px; // texto más grande
+          padding: 12px 0;
+          font-size: 18px;
           background-color: transparent;
           color: #3e2723;
-          min-width: 0; // evita que el flexbox limite el ancho del texto
+          min-width: 0;
         }
       }
 
       .btn-sort {
-        background-color: #6d4c41; // café medio
+        background-color: #6d4c41;
         color: #fff;
         border: none;
         padding: 10px 16px;
@@ -115,7 +117,7 @@
       gap: 12px;
 
       .btn-refresh {
-        background-color: #3e2723; // café oscuro
+        background-color: #3e2723;
         color: #fff;
         border: none;
         padding: 18px 18px;
@@ -134,7 +136,7 @@
       }
 
       .btn-new {
-        background-color: #d39f8e; // rojo elegante
+        background-color: #d39f8e;
         color: #fff;
         border: none;
         padding: 10px 16px;
@@ -192,47 +194,158 @@
       td {
         padding: 12px;
         border: 1px solid #ddd;
-        vertical-align: middle; // todas las celdas centradas
-        position: relative; // para posicionar el menú relativo a la celda
+        vertical-align: middle;
+        position: relative;
+        height: 60px;
       }
 
-      /* Estado */
-      .status-cell {
-        white-space: nowrap; // evita saltos raros
-        font-size: 0.95rem;
-        line-height: 1.2; // iguala altura al resto de la tabla
+      /* ESTILOS DE ESTADO ADAPTADOS AL HTML */
+      .status-active {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #2e7d32; /* Verde */
+        font-weight: 500;
 
         .material-icons {
-          font-size: 20px; // tamaño consistente
-          vertical-align: middle; // alinea con el texto
-        }
-
-        .material-icons.active {
-          color: #2e7d32;
-        }
-
-        .material-icons.inactive {
-          color: #c62828;
-        }
-
-        .status-text {
-          font-weight: 500;
-          color: #3e2723;
-          vertical-align: middle;
-          margin-left: 8px;
-        }
-
-        .status-text.active {
-          color: #66b256;
-        }
-
-        .status-text.inactive {
-          color: #d32f2f;
+          font-size: 20px;
         }
       }
 
-      /* Ícono de menú */
-      .btn-menu {
+      .status-inactive {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #c62828; /* Rojo */
+        font-weight: 500;
+
+        .material-icons {
+          font-size: 20px;
+        }
+      }
+
+      /* ESTILO NUEVO: Botón de Reproducir Audio */
+      /* 1. Botón inicial (Círculo marrón oscuro) */
+      .btn-play {
+        background-color: #3e2723;
+        border: none;
+        color: #f5f5dc;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        padding: 0;
+
+        .material-icons {
+          font-size: 28px;
+          margin-left: 2px;
+        }
+
+        &:hover:not(:disabled) {
+          background-color: #6d4c41;
+          transform: scale(1.1);
+        }
+      }
+
+      .audio-col {
+        width: 240px; /* Ancho fijo para que la columna no se mueva */
+        min-width: 240px;
+        vertical-align: middle;
+        padding-left: 15px !important;
+      }
+
+      .audio-player-pill {
+        display: flex;
+        align-items: center;
+        background-color: transparent; /* Invisible hasta que se activa o haces hover */
+        border-radius: 50px;
+        padding: 4px;
+        gap: 10px;
+        width: 220px;
+        height: 40px;
+        transition: all 0.3s ease;
+
+        // Cuando el audio está sonando, le damos color al fondo
+        &.active {
+          background-color: #bbaea6;
+          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .pill-btn {
+          background-color: #3e2723;
+          border: none;
+          color: #fff8e1;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          min-width: 32px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 2;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+          .material-icons {
+            font-size: 20px;
+          }
+
+          &:disabled {
+            background-color: #a09a98;
+            opacity: 0.5;
+          }
+        }
+
+        .pill-time {
+          color: #3e2723;
+          font-size: 11px;
+          font-weight: bold;
+          font-family: "Courier New", Courier, monospace;
+          white-space: nowrap;
+        }
+
+        .pill-progress-container {
+          flex-grow: 1;
+          height: 4px;
+          background-color: rgba(62, 39, 35, 0.2);
+          border-radius: 10px;
+          position: relative;
+          cursor: pointer;
+          margin-right: 8px;
+
+          .pill-progress-fill {
+            height: 100%;
+            background-color: #3e2723;
+            border-radius: 10px;
+          }
+
+          .pill-progress-thumb {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            border: 2px solid #3e2723;
+            border-radius: 50%;
+          }
+        }
+
+        /* Placeholder: Mantiene el espacio pero no muestra nada */
+        .pill-placeholder {
+          flex-grow: 1;
+        }
+      }
+      /* ESTILOS ADAPTADOS: Celda de acción y botón de menú */
+      .action-cell {
+        text-align: center;
+      }
+
+      .menu-btn {
         cursor: pointer;
         font-size: 22px;
         color: #3e2723;
@@ -256,8 +369,8 @@
 
     .page-btn {
       display: flex;
-      align-items: center; // centra ícono y texto en la misma línea
-      gap: 6px; // espacio entre ícono y texto
+      align-items: center;
+      gap: 6px;
       border: none;
       background: none;
       cursor: pointer;
@@ -267,14 +380,14 @@
       transition: color 0.2s;
 
       .material-icons {
-        font-size: 22px; // tamaño de ícono
-        line-height: 1; // evita desajuste vertical
+        font-size: 22px;
+        line-height: 1;
         display: flex;
         align-items: center;
       }
 
       .label {
-        line-height: 1; // iguala altura al ícono
+        line-height: 1;
         display: flex;
         align-items: center;
         font-family: "Patrick Hand", cursive;
@@ -298,6 +411,9 @@
   }
 }
 
+/* =========================================
+   POPUP Y MODAL (Sin cambios, ya estaban perfectos)
+   ========================================= */
 .menu-popup {
   position: fixed;
   min-width: 140px;
@@ -373,7 +489,7 @@
   background-color: #f8ead7;
   border-radius: 20px;
   width: 1044px;
-  height: 447px; 
+  height: 447px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   display: flex;
   box-sizing: border-box;
@@ -382,7 +498,7 @@
 .btn-close-modal {
   position: absolute;
   top: -15px;
-  right: 35px; 
+  right: 35px;
   background-color: #5c433b;
   color: white;
   border: none;
@@ -408,30 +524,29 @@
 .confirm-image-container {
   width: 320px;
   height: 100%;
-  position: relative; 
+  position: relative;
   img {
     position: absolute;
-    left: 20px; 
-    bottom: 90px; 
+    left: 20px;
+    bottom: 90px;
     width: 320px;
     height: auto;
     max-width: none;
     z-index: 10;
-    pointer-events: none; 
+    pointer-events: none;
   }
 }
 
 .confirm-actions-container {
-  flex: 1; 
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   padding-right: 50px;
   z-index: 5;
 }
 
-/* Textos y botones */
 .confirm-title {
   font-family: serif;
   font-size: 2.2rem;
@@ -452,7 +567,7 @@
   font-size: 1.6rem;
   cursor: pointer;
   margin-bottom: 18px;
-  font-family: "Dancing Script", cursive; 
+  font-family: "Dancing Script", cursive;
   transition:
     opacity 0.2s,
     transform 0.2s;

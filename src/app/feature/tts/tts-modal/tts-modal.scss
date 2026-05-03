@@ -1,0 +1,328 @@
+@use "sass:color";
+$font-header: 'Patrick Hand', cursive;
+$color-cafe-oscuro: #79665F; 
+$color-cafe-claro: #BAABA6;   
+$color-bg-modal: #F2E5D5;     
+$color-panel-interno: #E2D7D0; 
+$color-boton-rosa: #D1A196;   
+
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-container {
+  position: relative;
+  width: 900px;
+  max-width: 95vw;
+}
+
+.modal-tabs {
+  position: absolute;
+  top: -49px; 
+  left: 50px;
+  display: flex;
+  gap: 5px;
+  z-index: 10; 
+  
+  .m-tab {
+    font-family: $font-header;
+    font-size: 1.8rem;
+    font-style: italic;
+    padding: 0 40px; 
+    color: #fff;
+    cursor: pointer;
+    border-radius: 20px 20px 0 0;
+    background: $color-cafe-claro; 
+    height: 50px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &.active {
+      background: $color-cafe-oscuro; 
+      color: #FFFFFF; 
+    }
+  }
+}
+
+.btn-close {
+  position: absolute;
+  top: -47px; 
+  right: 40px; 
+  background: #5a4a42; 
+  color: #fff;
+  border: none;
+  border-radius: 15px 15px 0 0; 
+  width: 65px; 
+  height: 48px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 5;
+
+  .material-icons { font-size: 28px; }
+  &:hover { background: #463933; }
+}
+
+.modal {
+  background-color: $color-bg-modal;
+  border-radius: 30px;
+  padding: 45px 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+  .modal-title {
+    text-align: center;
+    font-family: $font-header;
+    font-size: 2.8rem;
+    margin-bottom: 5px;
+    color: #000;
+  }
+
+  .modal-divider {
+    border: 0;
+    border-top: 2px solid rgba(0,0,0,0.1);
+    margin: 15px 0 30px 0;
+  }
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 35px;
+}
+
+.translate-box {
+  background-color: $color-panel-interno;
+  border-radius: 20px;
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+  padding: 0; 
+
+  .box-header {
+    background-color: $color-cafe-claro; 
+    padding: 12px 20px;
+    font-weight: bold;
+    color: #4a3b37;
+    font-family: sans-serif;
+    font-size: 1.1rem;
+  }
+
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    resize: none;
+    outline: none;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    color: #4a3b37;
+  }
+
+  .voice-selection-container {
+    padding: 15px 20px 0 20px;
+    position: relative;
+
+    .searchable-select input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid rgba(0,0,0,0.1);
+      padding: 8px 0;
+      outline: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #4a3b37;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      max-height: 180px;
+      overflow-y: auto;
+      z-index: 1000;
+      border: 1px solid #eee;
+
+      .dropdown-item {
+        padding: 12px 20px;
+        cursor: pointer;
+        font-family: sans-serif;
+        color: #4a3b37;
+        transition: background 0.2s;
+
+        &:hover {
+          background-color: #fcf6ef;
+          color: $color-cafe-oscuro;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.audio-content {
+  padding: 20px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .audio-player-wrapper {
+    background-color: $color-cafe-oscuro;
+    border-radius: 25px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+
+    .btn-play-pause {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      .material-icons { font-size: 28px; }
+    }
+
+    .audio-time {
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .audio-progress {
+      flex: 1;
+      height: 6px;
+      cursor: pointer;
+      accent-color: #D6C8BE; 
+    }
+  }
+
+  .audio-buttons {
+    display: flex;
+    gap: 15px;
+
+    .btn-sec {
+      flex: 1;
+      padding: 12px;
+      border-radius: 25px;
+      border: none;
+      font-family: $font-header;
+      font-size: 1.5rem;
+      cursor: pointer;
+      text-transform: lowercase;
+
+      &.download { background: $color-boton-rosa; color: white; }
+      &.view-id { background: $color-cafe-claro; color: #5a4a42; }
+    }
+  }
+}
+
+.modal-footer {
+  .btn-action-main {
+    width: 100%;
+    padding: 18px;
+    background-color: $color-boton-rosa;
+    border-radius: 20px;
+    border: none;
+    font-family: $font-header;
+    font-size: 2.5rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: color.scale($color-boton-rosa, $lightness: -5%);
+      transform: translateY(-2px);
+    }
+    
+    &:disabled {
+      background-color: #cfcac4;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.loading-bar-container {
+  margin-top: -15px; 
+  margin-bottom: 25px;
+  text-align: center;
+  padding: 0 10px;
+  
+  .loading-bar {
+    height: 8px;
+    width: 100%;
+    background: rgba($color-cafe-claro, 0.3); 
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 40%;
+      background: $color-boton-rosa; 
+      border-radius: 10px;
+      animation: loadingAnim 1.5s infinite ease-in-out;
+    }
+  }
+
+  .loading-text {
+    font-family: $font-header;
+    color: $color-cafe-oscuro;
+    font-size: 1.3rem;
+    display: inline-block;
+    margin-top: 8px;
+    animation: pulseText 1.5s infinite;
+  }
+}
+
+@keyframes loadingAnim {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.disabled-body {
+  opacity: 0.6;
+  pointer-events: none; 
+  filter: grayscale(20%); 
+  transition: all 0.3s ease;
+}
+
+.audio-player-wrapper.disabled {
+  background-color: rgba($color-cafe-oscuro, 0.5) !important;
+  cursor: not-allowed;
+  
+  .btn-play-pause, .audio-progress {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.btn-sec:disabled {
+  background-color: #cfcac4 !important;
+  color: #8a7a75 !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

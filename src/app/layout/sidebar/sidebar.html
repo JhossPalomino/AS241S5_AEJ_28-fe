@@ -11,23 +11,33 @@
       <section class="menu-section">
         <h3>Principal</h3>
         <ul>
-          <li><span class="material-icons">dashboard</span> Dashboard</li>
+          <li routerLink="/dashboard" routerLinkActive="active">
+            <span class="material-icons">dashboard</span> Dashboard
+          </li>
         </ul>
       </section>
 
       <section class="menu-section">
         <h3>Modulos</h3>
         <ul>
-          <li><span class="material-icons">translate</span> Traductor</li>
-          <li><span class="material-icons">record_voice_over</span> Texto a Voz</li>
+          <li routerLink="/translate-list" routerLinkActive="active">
+            <span class="material-icons">translate</span> Traductor
+          </li>
+          <li routerLink="/tts-list" routerLinkActive="active">
+            <span class="material-icons">record_voice_over</span> Texto a Voz
+          </li>
         </ul>
       </section>
 
       <section class="menu-section">
         <h3>Extras</h3>
         <ul>
-          <li><span class="material-icons">info</span> Sobre nosotros</li>
-          <li><span class="material-icons">pets</span> Patitas ayudantes</li>
+          <li routerLink="/sobre-nosotros" routerLinkActive="active">
+            <span class="material-icons">info</span> Sobre nosotros
+          </li>
+          <li routerLink="/patitas" routerLinkActive="active">
+            <span class="material-icons">pets</span> Patitas ayudantes
+          </li>
         </ul>
       </section>
     </nav>

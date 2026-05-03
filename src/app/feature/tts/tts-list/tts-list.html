@@ -1,0 +1,156 @@
+<div class="app-container">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="main-content">
+    <router-outlet></router-outlet>
+    <div class="tts-header">
+      <h2>Especial de los Voz Magica</h2>
+    </div>
+
+    <div class="tts-list">
+
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-input">
+            <span class="material-icons">explore</span>
+            <input type="text" placeholder="busca tu próxima obsesión.." [(ngModel)]="seachTerm" />
+          </div>
+          <button class="btn-sort" (click)="toggleSort()">
+            <span class="material-icons">
+              {{ sortAscending ? 'arrow_upward' : 'arrow_downward' }}
+            </span>
+            {{ sortAscending ? 'Ascendente' : 'Descendente' }}
+          </button>
+        </div>
+
+        <div class="toolbar-right">
+          <button class="btn-refresh" (click)="loadTtsHistory()">
+            <span class="material-icons">refresh</span>
+          </button>
+          <button class="btn-new" (click)="ttsModal.open()">
+            <span class="material-icons">bookmark_add</span> Nuevo pedido
+          </button>
+          <app-tts-modal #ttsModal (closed)="onModalClosed()" (saved)="onModalSaved()"></app-tts-modal>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Estado</th>
+              <th>Texto</th>
+              <th>Voz</th>
+              <th>Fecha</th>
+              <th>Reproducir</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let t of paginatedTts">
+              <td>
+                <span *ngIf="t.status" class="status-active">
+                  <span class="material-icons">wifi</span> Activo
+                </span>
+                <span *ngIf="!t.status" class="status-inactive">
+                  <span class="material-icons">wifi_off</span> Inactivo
+                </span>
+              </td>
+
+              <td>{{ t.text }}</td>
+
+              <td>{{ t.voice }}</td>
+
+              <td>{{ t.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+
+              <td class="audio-col">
+                <div class="audio-player-pill" [class.active]="playingItemId === t.id">
+                  <button class="pill-btn" (click)="playAudio(t)" [disabled]="!t.status">
+                    <span class="material-icons">
+                      {{ playingItemId === t.id ? 'pause' : 'play_arrow' }}
+                    </span>
+                  </button>
+
+                  <ng-container *ngIf="playingItemId === t.id; else placeholder">
+                    <span class="pill-time">{{ audioCurrentTimeStr }}/{{ audioTotalTimeStr }}</span>
+                    <div class="pill-progress-container" (click)="seekAudio($event)">
+                      <div class="pill-progress-fill" [style.width.%]="audioProgressPercent"></div>
+                      <div class="pill-progress-thumb" [style.left.%]="audioProgressPercent"></div>
+                    </div>
+                  </ng-container>
+
+                  <ng-template #placeholder>
+                    <div class="pill-placeholder"></div>
+                  </ng-template>
+                </div>
+              </td>
+              <td class="action-cell">
+                <button class="menu-btn" (click)="openMenu(t, $event)">
+                  <span class="material-icons">more_vert</span>
+                </button>
+
+                <div *ngIf="t.showMenu" class="menu-popup" [style.left.px]="t.menuLeft" [style.top.px]="t.MenuTop">
+
+                  <button *ngIf="t.status" (click)="confirmDelete(t)" class="btn-delete">
+                    <span class="material-icons">delete</span> eliminar
+                  </button>
+
+                  <button *ngIf="!t.status" (click)="confirmRestore(t)" class="btn-restore">
+                    <span class="material-icons">restore</span> restaurar
+                  </button>
+
+                  <button (click)="editItem(t)">
+                    <span class="material-icons">edit</span>
+                    Editar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button class="page-btn" (click)="prevPage()">
+          <span class="material-icons">chevron_left</span>
+          <span class="label">Anterior</span>
+        </button>
+        <span class="page-number">{{ currentPage }}</span>
+        <button class="page-btn" (click)="nextPage()">
+          <span class="label">Siguiente</span>
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <div class="confirm-overlay" *ngIf="showConfirmModal">
+    <div class="confirm-modal">
+      <button class="btn-close-modal" (click)="closeConfirmModal()">
+        <span class="material-icons">close</span>
+      </button>
+
+      <div class="confirm-image-container">
+        <img src="manhattancafe.webp" alt="Taza de café" />
+      </div>
+
+      <div class="confirm-actions-container">
+        <h3 class="confirm-title" *ngIf="confirmActionType === 'delete'">
+          ¿Esta seguro de que desea<br>eliminar este audio?
+        </h3>
+        <h3 class="confirm-title" *ngIf="confirmActionType === 'restore'">
+          ¿Esta seguro de que desea<br>restaurar este audio?
+        </h3>
+
+        <button class="btn-accept" (click)="executeConfirmAction()">
+          si, acepto las consecuencias
+        </button>
+        <button class="btn-decline" (click)="closeConfirmModal()">
+          prefiero descartar
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
