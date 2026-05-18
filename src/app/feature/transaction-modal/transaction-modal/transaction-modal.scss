@@ -108,12 +108,11 @@
     background: #fff;
     border-radius: 30px; 
     
-    /* MAGIA 1: Visible para que el menú pueda salir de la caja */
     overflow: visible; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 
     .box-header {
-      position: relative; /* MAGIA 2: Necesario para el menú flotante */
+      position: relative; 
       background: #e5ddd5; 
       padding: 12px 30px; 
       border-radius: 30px 30px 0 0;
@@ -126,7 +125,6 @@
       color: #666;
       letter-spacing: 0.5px;
 
-      /* --- ESTILOS DEL NUEVO BUSCADOR --- */
       .searchable-select {
         position: relative;
         display: flex;
@@ -154,7 +152,6 @@
           }
         }
 
-        /* Flechita SVG personalizada */
         &::after {
           content: '';
           position: absolute;
@@ -171,11 +168,10 @@
         }
       }
 
-      /* --- ESTILOS DEL MENÚ FLOTANTE --- */
       .dropdown-menu {
         position: absolute;
         top: 100%; 
-        left: 0; /* MAGIA 3: Alineado a la izquierda */
+        left: 0; 
         margin-top: 5px; 
         background-color: #fff; 
         border: 1px solid #e5ddd5; 
@@ -233,7 +229,6 @@
       outline: none;
       height: 320px; 
       
-      /* MAGIA 4: Compensamos el overflow que quitamos arriba */
       border-radius: 0 0 30px 30px; 
 
       &:disabled {
