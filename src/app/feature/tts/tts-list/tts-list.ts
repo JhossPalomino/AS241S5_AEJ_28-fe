@@ -13,7 +13,7 @@ import { TtsService } from '../../../core/services/tts-services/tts-service';
 import { Tts } from '../../../core/interfaces/tts';
 import { TtsModal } from '../tts-modal/tts-modal';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from "@angular/router";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-tts-list',
@@ -51,7 +51,37 @@ export class TtsList implements OnInit {
 
   loadTtsHistory() {
     this.ttsService.getTts().subscribe((data: Tts[]) => {
-      this.ttsHistory = data || []; 
+      this.ttsHistory = data || [];
+
+      if (this.ttsHistory.length === 0) {
+        this.ttsHistory = [
+          {
+            id: 'fake1',
+            text: 'Bienvenido a la demo',
+            voice: 'es-ES',
+            createdAt: new Date(), 
+            status: true,
+            showMenu: false,
+          },
+          {
+            id: 'fake2',
+            text: 'Hello world',
+            voice: 'en-US',
+            createdAt: new Date('2026-06-15T09:00:00'),
+            status: true,
+            showMenu: false,
+          },
+          {
+            id: 'fake3',
+            text: 'Bonjour le monde',
+            voice: 'fr-FR',
+            createdAt: new Date('2026-06-14T18:30:00'),
+            status: false,
+            showMenu: false,
+          },
+        ];
+      }
+
       this.cdr.detectChanges();
     });
   }
@@ -175,7 +205,7 @@ export class TtsList implements OnInit {
   }
 
   get filteredAndSortedTts() {
-    let result = [...this.ttsHistory || []];
+    let result = [...(this.ttsHistory || [])];
 
     if (this.seachTerm.trim()) {
       const term = this.seachTerm.toLowerCase();

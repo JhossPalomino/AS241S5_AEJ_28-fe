@@ -44,7 +44,19 @@ export class TranslateList implements OnInit {
 
   loadLanguages() {
     this.translateService.getLanguages().subscribe((res: any) => {
-      const langs = res?.languages || [];
+      let langs = res?.languages || [];
+
+      if (langs.length === 0) {
+        langs = [
+          { language: 'en', name: 'Inglés' },
+          { language: 'es', name: 'Español' },
+          { language: 'fr', name: 'Francés' },
+          { language: 'de', name: 'Alemán' },
+          { language: 'it', name: 'Italiano' },
+          { language: 'pt', name: 'Portugués' },
+        ];
+      }
+
       langs.forEach((l: { language: string; name: string }) => {
         this.languageMap[l.language] = l.name;
       });
@@ -59,6 +71,42 @@ export class TranslateList implements OnInit {
   loadTranslations() {
     this.translateService.getTranslations().subscribe((data: Translate[]) => {
       this.translations = data || [];
+
+      if (this.translations.length === 0) {
+        this.translations = [
+          {
+            id: 'fake1',
+            originalText: 'Hello world',
+            translatedText: 'Hola mundo',
+            sourceLanguage: 'en',
+            targetLanguage: 'es',
+            createdAt: new Date(),
+            status: true,
+            showMenu: false,
+          },
+          {
+            id: 'fake2',
+            originalText: 'Good morning',
+            translatedText: 'Buenos días',
+            sourceLanguage: 'en',
+            targetLanguage: 'es',
+            createdAt: new Date(),
+            status: true,
+            showMenu: false,
+          },
+          {
+            id: 'fake3',
+            originalText: 'Merci beaucoup',
+            translatedText: 'Muchas gracias',
+            sourceLanguage: 'fr',
+            targetLanguage: 'es',
+            createdAt: new Date(),
+            status: false,
+            showMenu: false,
+          },
+        ];
+      }
+
       this.cdr.detectChanges();
     });
   }
