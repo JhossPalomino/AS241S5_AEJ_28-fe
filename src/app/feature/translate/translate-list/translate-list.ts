@@ -44,7 +44,7 @@ export class TranslateList implements OnInit {
 
   loadLanguages() {
     this.translateService.getLanguages().subscribe((res: any) => {
-      let langs = res?.languages || [];
+      let langs = Array.isArray(res?.languages) ? res.languages : [];
 
       if (langs.length === 0) {
         langs = [
@@ -70,7 +70,7 @@ export class TranslateList implements OnInit {
 
   loadTranslations() {
     this.translateService.getTranslations().subscribe((data: Translate[]) => {
-      this.translations = data || [];
+      this.translations = Array.isArray(data) ? data : [];
 
       if (this.translations.length === 0) {
         this.translations = [
@@ -118,15 +118,10 @@ export class TranslateList implements OnInit {
   @HostListener('document:click', ['$event'])
   cerrarMenusAlClicarAfuera(event: Event) {
     const targetElement = event.target as HTMLElement;
-
-    if (targetElement && targetElement.closest('.menu-popup')) {
-      return;
-    }
+    if (targetElement && targetElement.closest('.menu-popup')) return;
 
     this.translations.forEach((t) => {
-      if (t.showMenu) {
-        t.showMenu = false;
-      }
+      if (t.showMenu) t.showMenu = false;
     });
   }
 
@@ -149,7 +144,7 @@ export class TranslateList implements OnInit {
     }
   }
 
-  openMenu(item: any, event: MouseEvent) {
+  openMenu(item: Translate, event: MouseEvent) {
     if (item.showMenu) {
       item.showMenu = false;
       return;
@@ -175,19 +170,19 @@ export class TranslateList implements OnInit {
   toggleSort() {
     this.sortAscending = !this.sortAscending;
     this.translations.sort((a, b) => {
-      const textA = a.originalText.toLowerCase();
-      const textB = b.originalText.toLowerCase();
+      const textA = a.originalText?.toLowerCase() || '';
+      const textB = b.originalText?.toLowerCase() || '';
       return this.sortAscending
         ? textA.localeCompare(textB)
         : textB.localeCompare(textA);
     });
   }
 
-  toggleMenu(item: any) {
+  toggleMenu(item: Translate) {
     item.showMenu = !item.showMenu;
   }
 
-  edit(t: any) {
+  edit(t: Translate) {
     t.showMenu = false;
     this.transactionModal.open(t);
   }
@@ -235,32 +230,8 @@ export class TranslateList implements OnInit {
       });
     }
   }
-  /*
-  delete(item: Translate) {
-    item.showMenu = false;
 
-    this.translateService.deleteTranslation(item.id).subscribe({
-      next: () => {
-        item.status = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error(err),
-    });
-  }
-
-  restore(item: Translate) {
-    item.showMenu = false;
-
-    this.translateService.restoreTranslation(item.id).subscribe({
-      next: () => {
-        item.status = true;
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error(err),
-    });
-  }*/
-
-  view(item: any) {
+  view(item: Translate) {
     console.log(item);
   }
 

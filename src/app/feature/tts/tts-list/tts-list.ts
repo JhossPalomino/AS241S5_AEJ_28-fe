@@ -4,8 +4,6 @@ import {
   HostListener,
   ChangeDetectorRef,
   ViewChild,
-  EventEmitter,
-  Output,
 } from '@angular/core';
 import { Sidebar } from '../../../layout/sidebar/sidebar';
 import { CommonModule } from '@angular/common';
@@ -23,7 +21,6 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
 })
 export class TtsList implements OnInit {
-  ttsItems: Tts[] = [];
   currentPage = 1;
   pageSize = 9;
   showConfirmModal = false;
@@ -38,7 +35,7 @@ export class TtsList implements OnInit {
   selectedItem: Tts | null = null;
   seachTerm: string = '';
   sortAscending: boolean = true;
-  ttsHistory: any[] = [];
+  ttsHistory: Tts[] = [];
 
   constructor(
     private ttsService: TtsService,
@@ -59,8 +56,9 @@ export class TtsList implements OnInit {
             id: 'fake1',
             text: 'Bienvenido a la demo',
             voice: 'es-ES',
-            createdAt: new Date(), 
+            createdAt: new Date(),
             status: true,
+            audioFileId: 'fakeAudioId1',
             showMenu: false,
           },
           {
@@ -69,6 +67,7 @@ export class TtsList implements OnInit {
             voice: 'en-US',
             createdAt: new Date('2026-06-15T09:00:00'),
             status: true,
+            audioFileId: 'fakeAudioId2',
             showMenu: false,
           },
           {
@@ -77,6 +76,7 @@ export class TtsList implements OnInit {
             voice: 'fr-FR',
             createdAt: new Date('2026-06-14T18:30:00'),
             status: false,
+            audioFileId: 'fakeAudioId3',
             showMenu: false,
           },
         ];
@@ -186,6 +186,7 @@ export class TtsList implements OnInit {
       this.currentAudio = null;
     }
   }
+
   openNewTts() {
     this.ttsModal.open();
   }
@@ -199,7 +200,7 @@ export class TtsList implements OnInit {
     const targetElement = event.target as HTMLElement;
     if (targetElement && targetElement.closest('.menu-popup')) return;
 
-    this.ttsItems.forEach((t) => {
+    this.ttsHistory.forEach((t) => {
       if (t.showMenu) t.showMenu = false;
     });
   }
@@ -211,8 +212,8 @@ export class TtsList implements OnInit {
       const term = this.seachTerm.toLowerCase();
       result = result.filter(
         (t) =>
-          t.text.toLowerCase().includes(term) ||
-          t.voice.toLowerCase().includes(term),
+          t.text?.toLowerCase().includes(term) ||
+          t.voice?.toLowerCase().includes(term),
       );
     }
 
@@ -254,7 +255,7 @@ export class TtsList implements OnInit {
       return;
     }
 
-    this.ttsItems.forEach((t) => (t.showMenu = false));
+    this.ttsHistory.forEach((t) => (t.showMenu = false));
     event.stopPropagation();
     item.showMenu = true;
 
@@ -272,7 +273,7 @@ export class TtsList implements OnInit {
   }
 
   editItem(item: Tts) {
-    this.ttsItems.forEach((t) => (t.showMenu = false));
+    this.ttsHistory.forEach((t) => (t.showMenu = false));
     this.ttsModal.open(item);
   }
 
