@@ -48,6 +48,12 @@
             </tr>
           </thead>
           <tbody>
+            <tr *ngIf="paginatedTts.length === 0">
+              <td colspan="6" class="no-data">
+                <span class="material-icons">hourglass_empty</span>
+                Esperando datos del servidor...
+              </td>
+            </tr>
             <tr *ngFor="let t of paginatedTts">
               <td>
                 <span *ngIf="t.status" class="status-active">
@@ -58,11 +64,11 @@
                 </span>
               </td>
 
-              <td>{{ t.text }}</td>
+              <td>{{ t.text || '---' }}</td>
 
-              <td>{{ t.voice }}</td>
+              <td>{{ t.voice || '---' }}</td>
 
-              <td>{{ t.createdAt | date:'yyyy-MM-dd HH:mm' }}</td>
+              <td>{{ t.createdAt ? (t.createdAt | date:'yyyy-MM-dd HH:mm') : '---' }}</td>
 
               <td class="audio-col">
                 <div class="audio-player-pill" [class.active]="playingItemId === t.id">

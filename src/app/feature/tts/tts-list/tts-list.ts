@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { Sidebar } from '../../../layout/sidebar/sidebar';
 import { CommonModule } from '@angular/common';
-// Importa tu nuevo servicio y la interfaz Tts
 import { TtsService } from '../../../core/services/tts-services/tts-service';
 import { Tts } from '../../../core/interfaces/tts';
 import { TtsModal } from '../tts-modal/tts-modal';
@@ -52,7 +51,7 @@ export class TtsList implements OnInit {
 
   loadTtsHistory() {
     this.ttsService.getTts().subscribe((data: Tts[]) => {
-      this.ttsHistory = data; // <--- Cambiado de ttsItems a ttsHistory
+      this.ttsHistory = data || []; 
       this.cdr.detectChanges();
     });
   }
@@ -176,9 +175,8 @@ export class TtsList implements OnInit {
   }
 
   get filteredAndSortedTts() {
-    let result = [...this.ttsHistory]; // ttsHistory es tu lista original del backend
+    let result = [...this.ttsHistory || []];
 
-    // 1. Filtrado por texto o voz
     if (this.seachTerm.trim()) {
       const term = this.seachTerm.toLowerCase();
       result = result.filter(
@@ -188,7 +186,6 @@ export class TtsList implements OnInit {
       );
     }
 
-    // 2. Ordenamiento por fecha (createdAt)
     result.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime();
       const dateB = new Date(b.createdAt).getTime();

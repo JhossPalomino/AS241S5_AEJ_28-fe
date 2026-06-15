@@ -42,10 +42,16 @@
                         <th>Fecha</th>
                         <th>Idioma inicial</th>
                         <th>Idioma final</th>
-                        <th class="no-header"></th> 
+                        <th class="no-header"></th>
                     </tr>
                 </thead>
                 <tbody>
+                    <tr *ngIf="paginatedTranslations.length === 0">
+                        <td colspan="7" class="no-data">
+                            <span class="material-icons">hourglass_empty</span>
+                            Esperando datos del servidor...
+                        </td>
+                    </tr>
                     <tr *ngFor="let t of paginatedTranslations">
                         <td class="status-cell">
                             <span class="material-icons" [ngClass]="t.status ? 'active' : 'inactive'">

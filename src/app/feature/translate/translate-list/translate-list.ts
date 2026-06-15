@@ -11,7 +11,7 @@ import { TranslateService } from '../../../core/services/translate-services/tran
 import { CommonModule } from '@angular/common';
 import { Translate } from '../../../core/interfaces/translate';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from "@angular/router"; 
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-translate-list',
@@ -44,7 +44,8 @@ export class TranslateList implements OnInit {
 
   loadLanguages() {
     this.translateService.getLanguages().subscribe((res: any) => {
-      res.languages.forEach((l: { language: string; name: string }) => {
+      const langs = res?.languages || [];
+      langs.forEach((l: { language: string; name: string }) => {
         this.languageMap[l.language] = l.name;
       });
       this.cdr.detectChanges();
@@ -57,7 +58,7 @@ export class TranslateList implements OnInit {
 
   loadTranslations() {
     this.translateService.getTranslations().subscribe((data: Translate[]) => {
-      this.translations = data;
+      this.translations = data || [];
       this.cdr.detectChanges();
     });
   }
@@ -217,10 +218,10 @@ export class TranslateList implements OnInit {
 
   get filteredTranslations(): Translate[] {
     const term = this.searchTerm.toLowerCase();
-    return this.translations.filter(
+    return (this.translations || []).filter(
       (t) =>
-        t.originalText.toLowerCase().includes(term) ||
-        t.translatedText.toLowerCase().includes(term),
+        t.originalText?.toLowerCase().includes(term) ||
+        t.translatedText?.toLowerCase().includes(term),
     );
   }
 }
