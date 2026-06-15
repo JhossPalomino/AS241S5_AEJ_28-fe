@@ -71,7 +71,23 @@
                 }
               ],
               "outputHashing": "all",
-              "prerender": false   
+              "prerender": false
+            },
+            "docker-browser": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "8kB",
+                  "maximumError": "10kB"
+                }
+              ],
+              "outputHashing": "all",
+              "outputMode": "static"
             }
           },
           "defaultConfiguration": "production"
