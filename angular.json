@@ -87,7 +87,8 @@
                 }
               ],
               "outputHashing": "all",
-              "outputMode": "static"
+              "outputMode": "static",
+              "prerender": false 
             }
           },
           "defaultConfiguration": "production"
