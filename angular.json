@@ -71,7 +71,7 @@
                 }
               ],
               "outputHashing": "all",
-              "prerender": false
+              "prerender": false   
             }
           },
           "defaultConfiguration": "production"
